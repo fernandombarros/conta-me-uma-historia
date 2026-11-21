@@ -16,6 +16,7 @@ por isso o Chrome tem de estar instalado. Os tipos de letra vêm do Google Fonts
 import datetime
 import html
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -31,7 +32,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parent.parent
 BOOKS = ROOT / "assets" / "books"
 OUT = ROOT / "assets" / "downloads"
-CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+CHROMES = ["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"]  # macOS; no Linux, usa-se o que houver
 FONTS = ("https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400"
          "&family=Young+Serif&display=block")
 PUBLISHER = "Conta-me Uma História"
@@ -183,8 +184,18 @@ h1 {{ font-weight: normal; font-size: {120 if len(book["title"]) < 22 else 96}px
 </style></head><body class="{"with-pic" if picture else "no-pic"}">{content}</body></html>"""
 
 
+def find_chrome():
+    """Caminho do Google Chrome (ou Chromium): variável CHROME, depois os sítios habituais."""
+    for candidate in [os.environ.get("CHROME"), *CHROMES,
+                      shutil.which("google-chrome"), shutil.which("chromium"), shutil.which("chromium-browser")]:
+        if candidate and Path(candidate).exists():
+            return candidate
+    raise RuntimeError("Não encontrei o Google Chrome. Instale-o ou defina a variável CHROME.")
+
+
 def chrome(args, tmp):
-    subprocess.run([CHROME, "--headless", "--disable-gpu", "--hide-scrollbars", "--no-first-run",
+    sandbox = [] if sys.platform == "darwin" else ["--no-sandbox"]  # o Linux (ex.: GitHub Actions) precisa disto
+    subprocess.run([find_chrome(), "--headless", "--disable-gpu", "--hide-scrollbars", "--no-first-run", *sandbox,
                     f"--user-data-dir={tmp / 'chrome'}", "--virtual-time-budget=15000", *args],
                    check=True, capture_output=True, timeout=120)
 

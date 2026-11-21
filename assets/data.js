@@ -2,8 +2,10 @@
 // Imagens, PDFs e áudios continuam alojados no Wix original.
 
 const PDF = (id) => `https://56dd32b4-427b-445c-9cea-7b1fa07d8724.filesusr.com/ugd/d40862_${id}.pdf`;
-const IMG = (file, w = 640, h = 480) =>
-  `https://static.wixstatic.com/media/d40862_${file}/v1/fill/w_${w},h_${h},al_c,q_85/${file}`;
+// Capas das histórias novas são ficheiros locais (com "/" no caminho); as antigas estão no Wix.
+const IMG = (file, w = 640, h = 480) => file.includes("/")
+  ? file
+  : `https://static.wixstatic.com/media/d40862_${file}/v1/fill/w_${w},h_${h},al_c,q_85/${file}`;
 const MP3 = (id) => `https://music.wixstatic.com/mp3/d40862_${id}.mp3`;
 
 // Histórias ilustradas: texto, jogo ("Consegues acertar?") e história em imagens.

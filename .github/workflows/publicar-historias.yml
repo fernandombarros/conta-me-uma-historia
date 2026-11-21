@@ -1,0 +1,48 @@
+name: Publicar histórias novas
+
+# Corre quando alguém carrega um PDF ou um .txt para a pasta novas-historias/
+# (ou quando se carrega em "Run workflow" na aba Actions).
+on:
+  push:
+    branches: [main]
+    paths:
+      - "novas-historias/*.pdf"
+      - "novas-historias/*.txt"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publicar-historias
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar as ferramentas de conversão
+        run: pip install pymupdf pillow
+
+      - name: Publicar as histórias novas
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python3 tools/add_story.py
+
+      - name: Guardar as alterações no sítio
+        run: |
+          git config user.name "Publicação automática"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nada de novo para guardar."
+          else
+            git commit -m "Publicar histórias novas"
+            git push
+          fi
