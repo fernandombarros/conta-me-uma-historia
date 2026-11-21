@@ -83,3 +83,8 @@ window.IMG = IMG;
 // Link do "Consegues acertar?": a página interativa se existir, senão o PDF.
 window.quizHref = (s) => s.quizPage ? `quiz.html?h=${s.book}` : s.quiz;
 window.quizTarget = (s) => s.quizPage ? "" : ' target="_blank" rel="noopener"';
+
+// Rascunhos (`draft: true`) só aparecem na pré-visualização: as páginas com ?previa=1 (ver /previa/).
+// `featured: true` = história em destaque na página inicial (só uma de cada vez).
+window.PREVIEW = new URLSearchParams(location.search).has("previa");
+window.PUBLISHED = ILLUSTRATED.filter((s) => PREVIEW || !s.draft);

@@ -25,7 +25,14 @@ Tudo se faz no site do GitHub, no navegador.
    - **Idade**: a idade dos leitores, por exemplo `4 a 8`.
    - **Frase**: uma frase curta que apresenta a história.
 
-4. Não apague nem mude as palavras "Título", "Idade" e "Frase".
+   Há ainda duas linhas opcionais, que podem acrescentar-se ao mesmo ficheiro (ver [Ver antes de publicar](#ver-antes-de-publicar)):
+
+   ```
+   Estado: rascunho
+   Destaque: sim
+   ```
+
+4. Não apague nem mude as palavras "Título", "Idade", "Frase", "Estado" e "Destaque".
 5. Volte à pasta **novas-historias**, clique em **Add file** e depois em **Create new file**.
 6. No nome do ficheiro, escreva o nome da história seguido de `.txt`, por exemplo `A Minha História.txt`.
 7. Cole o texto que copiou no passo 3, preencha os campos e clique em **Commit changes**.
@@ -44,6 +51,35 @@ Tudo se faz no site do GitHub, no navegador.
 3. Espere cerca de 10 minutos. Depois abra o site: a história aparece na página **Ler**, com os botões **Ler** e **Descarregar** (EPUB e PDF).
 4. Os ficheiros que foram publicados ficam guardados em **novas-historias/feitas**.
 
+## Ver antes de publicar
+
+Pode ver a história no site antes de ela ser pública, usando o **Estado**:
+
+- **Estado: rascunho**: a história é preparada e fica escondida. Não aparece na página **Ler** nem na página inicial.
+- **Estado: publicar** (ou sem esta linha): a história aparece no site normalmente.
+
+Para ver os rascunhos, abra o endereço do site seguido de **/previa/** (por exemplo, `…/conta-me-uma-historia/previa/`). Nessa página vê:
+
+- a página inicial e a página **Ler**, como ficam com os rascunhos incluídos;
+- a lista de rascunhos, com os botões para **Abrir o livro**, **EPUB** e **PDF**.
+
+Quando estiver satisfeito, publique a história sem carregar o PDF outra vez:
+
+1. Na pasta **novas-historias**, clique em **Add file**, depois em **Create new file**.
+2. Dê ao ficheiro o nome da história seguido de `.txt`, por exemplo `A Minha História.txt`.
+3. Escreva apenas:
+
+   ```
+   Título: A Minha História
+   Estado: publicar
+   ```
+
+4. Clique em **Commit changes**. A história passa a aparecer na página **Ler**, em cerca de 10 minutos.
+
+**Destaque** coloca a história na página inicial, no lugar de destaque. Só uma história pode estar em destaque de cada vez: ao destacar outra, a anterior deixa de estar. Para destacar uma história, escreva no ficheiro `.txt` a linha `Destaque: sim`, com o título (e, se for só para mudar isto, sem o PDF), como no passo anterior. Para a retirar do destaque, escreva `Destaque: não`.
+
+Os rascunhos não estão protegidos por senha. Quem tiver o endereço de **/previa/** consegue vê-los, por isso não o partilhe.
+
 ## Se aparecer um X vermelho
 
 Um X vermelho quer dizer que a história não foi publicada. O PDF continua em **novas-historias**.
@@ -57,7 +93,7 @@ Um X vermelho quer dizer que a história não foi publicada. O PDF continua em *
 
 - Carregue sempre o PDF e o `.txt` da mesma história na mesma vez.
 - Não use aspas no título.
-- Se quiser mudar a frase ou a idade de uma história já publicada, avise quem o está a ajudar.
+- Para mudar a frase ou a idade de uma história já publicada, avise quem o está a ajudar.
 
 ---
 
@@ -72,3 +108,5 @@ Um X vermelho quer dizer que a história não foi publicada. O PDF continua em *
   ```
 
 - Cada história publicada fica em `assets/books/` (texto e ilustrações), em `assets/downloads/` (EPUB e PDF) e na lista `assets/data.js`.
+- Na lista, `draft: true` marca um rascunho (só visível com `?previa=1`, usado por `previa/index.html`), e `featured: true` marca a história em destaque na página inicial.
+- Um `.txt` sem PDF muda o `Estado` e o `Destaque` de uma história que já existe (`tools/add_story.py`, função `update`).

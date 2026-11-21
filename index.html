@@ -70,8 +70,8 @@
         <div class="wrap">
           <div>
             <p class="eyebrow">História nova</p>
-            <h2>Já leste <br>O Cavalinho Mágico?</h2>
-            <p>Um amigo muito especial… O João Gonçalo e o Cavalo Branco brincam todo o dia no campo, mas à noite, à janela, há uma surpresa à espera. Para leitores dos 4 aos 8 anos.</p>
+            <h2 id="featured-title">Já leste <br>O Cavalinho Mágico?</h2>
+            <p id="featured-text">Um amigo muito especial… O João Gonçalo e o Cavalo Branco brincam todo o dia no campo, mas à noite, à janela, há uma surpresa à espera. Para leitores dos 4 aos 8 anos.</p>
             <div class="hero-actions">
               <a class="btn btn-primary" id="featured-read">Abrir o livro</a>
               <a class="btn btn-ghost" id="featured-quiz">Consegues acertar?</a>
@@ -147,7 +147,7 @@
 
   <div data-footer></div>
 
-  <script src="assets/data.js?v=3"></script>
+  <script src="assets/data.js?v=4"></script>
   <script src="assets/site.js?v=4"></script>
   <script src="assets/design.js?v=1"></script>
   <script>
@@ -160,10 +160,20 @@
        </a>`).join("");
 
     // Destaque
-    const featured = byBook("o-cavalinho-magico");
+    // A história marcada como "Destaque" na lista; sem marca, fica O Cavalinho Mágico (texto original).
+    const marked = PUBLISHED.find((s) => s.featured);
+    const featured = marked || byBook("o-cavalinho-magico");
+    if (marked) {
+      document.getElementById("featured-title").innerHTML = `Já leste <br>${marked.title}?`;
+      document.getElementById("featured-text").textContent =
+        `${marked.blurb} ${marked.age[0] === marked.age[1] ? `Para leitores dos ${marked.age[0]} anos.` : `Para leitores dos ${marked.age[0]} aos ${marked.age[1]} anos.`}`;
+    }
     document.getElementById("featured-img").src = IMG(featured.cover, 800, 600);
+    document.getElementById("featured-img").alt = `Ilustração de ${featured.title}`;
     document.getElementById("featured-read").href = `livro.html?h=${featured.book}`;
-    document.getElementById("featured-quiz").href = quizHref(featured);
+    const featuredQuiz = quizHref(featured);
+    document.getElementById("featured-quiz").hidden = !featuredQuiz;
+    if (featuredQuiz) document.getElementById("featured-quiz").href = featuredQuiz;
 
     // Separadores
     const tabs = document.querySelectorAll('[role="tab"]');

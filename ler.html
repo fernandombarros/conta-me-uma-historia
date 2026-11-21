@@ -62,7 +62,7 @@
 
   <div data-footer></div>
 
-  <script src="assets/data.js?v=3"></script>
+  <script src="assets/data.js?v=4"></script>
   <script src="assets/site.js?v=4"></script>
   <script src="assets/design.js?v=1"></script>
   <script>
@@ -88,7 +88,7 @@
         </div>
       </div>` : "";
 
-    illustratedEl.innerHTML = ILLUSTRATED.map((s, i) => `
+    illustratedEl.innerHTML = PUBLISHED.map((s, i) => `
       <article class="story" data-i="${i}">
         <figure>
           <a ${readLink(s)} tabindex="-1">
@@ -183,7 +183,7 @@
     // Filtra e anima: os que ficam deslizam para o novo lugar (FLIP), os novos aparecem, os que saem desvanecem.
     function apply() {
       const groups = [
-        { list: illustratedEl, items: [...illustratedEl.querySelectorAll(":scope > .story:not(.ghost)")], data: ILLUSTRATED, empty: "illustrated-empty" },
+        { list: illustratedEl, items: [...illustratedEl.querySelectorAll(":scope > .story:not(.ghost)")], data: PUBLISHED, empty: "illustrated-empty" },
         { list: receivedEl, items: [...receivedEl.querySelectorAll(":scope > li:not(.ghost)")], data: RECEIVED, empty: "received-empty" },
       ];
       const all = groups.flatMap((g) => g.items);
