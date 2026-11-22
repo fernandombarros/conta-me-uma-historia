@@ -32,7 +32,11 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parent.parent
 BOOKS = ROOT / "assets" / "books"
 OUT = ROOT / "assets" / "downloads"
-CHROMES = ["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"]  # macOS; no Linux, usa-se o que houver
+CHROMES = [  # macOS e Windows; no Linux procura-se google-chrome/chromium
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+    r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+]
 FONTS = ("https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400"
          "&family=Young+Serif&display=block")
 PUBLISHER = "Conta-me Uma História"
@@ -194,7 +198,7 @@ def find_chrome():
 
 
 def chrome(args, tmp):
-    sandbox = [] if sys.platform == "darwin" else ["--no-sandbox"]  # o Linux (ex.: GitHub Actions) precisa disto
+    sandbox = ["--no-sandbox"] if sys.platform.startswith("linux") else []  # o Linux (ex.: GitHub Actions) precisa disto
     subprocess.run([find_chrome(), "--headless", "--disable-gpu", "--hide-scrollbars", "--no-first-run", *sandbox,
                     f"--user-data-dir={tmp / 'chrome'}", "--virtual-time-budget=15000", *args],
                    check=True, capture_output=True, timeout=120)

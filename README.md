@@ -97,15 +97,84 @@ Um X vermelho quer dizer que a história não foi publicada. O PDF continua em *
 
 ---
 
+## Testar o site no seu computador (localhost)
+
+Pode abrir o site no seu próprio computador e testá-lo antes de ele ser publicado. Só precisa de duas ferramentas gratuitas: o **Git** (para copiar o projeto) e o **Python** (para mostrar o site no navegador). Tudo se faz no Windows, a partir do **Windows PowerShell**.
+
+### 1. Instalar o que falta
+
+1. **Git**: descarregue em `git-scm.com/download/win` e instale com as opções por omissão.
+2. **Python**: descarregue em `python.org/downloads` e instale. **Atenção:** na primeira janela do instalador, marque a opção **Add python.exe to PATH** antes de clicar em **Install Now**.
+3. Para confirmar que está tudo instalado, abra o **Windows PowerShell** (escreva "PowerShell" no menu Iniciar) e escreva estas duas linhas, uma de cada vez, carregando em Enter:
+
+   ```powershell
+   git --version
+   py --version
+   ```
+
+   Se aparecer um número de versão para cada uma, está pronto. Se aparecer "não é reconhecido", feche o PowerShell, abra-o outra vez e tente de novo. Se continuar, volte ao passo 1 e reinstale o programa em falta.
+
+### 2. Copiar o projeto para o seu computador
+
+No PowerShell, escreva estas linhas (uma de cada vez, com Enter):
+
+```powershell
+cd $HOME\Desktop
+git clone https://github.com/fernandombarros/conta-me-uma-historia.git
+cd conta-me-uma-historia
+```
+
+- A primeira vez que copiar o projeto, o Windows pode abrir uma janela para entrar na conta do GitHub. Entre com a sua conta.
+- O comando cria uma pasta **conta-me-uma-historia** na secretária, com todos os ficheiros do site.
+- Não precisa de copiar o projeto com o Git: no GitHub, clique em **Code** e depois em **Download ZIP**, e extraia o ficheiro na secretária (botão direito, **Extrair tudo**). Nesse caso, não recebe as atualizações automaticamente.
+
+### 3. Abrir o site no seu computador
+
+1. No PowerShell, dentro da pasta do projeto, escreva:
+
+   ```powershell
+   py -m http.server 8000
+   ```
+
+2. Deixe esta janela aberta. Não a feche enquanto testa.
+3. Abra o Chrome ou o Edge e escreva no endereço: **http://localhost:8000**
+
+   O site abre como se estivesse online. Para ver a pré-visualização dos rascunhos, abra **http://localhost:8000/previa/**.
+
+4. Para parar o site, volte ao PowerShell e carregue em **Ctrl + C**.
+
+Se aparecer uma mensagem do Windows sobre a firewall, pode clicar em **Cancelar**: o site continua a funcionar no seu computador.
+
+### 4. Quando houver alterações
+
+Antes de testar uma versão nova, atualize a pasta. No PowerShell, dentro da pasta do projeto:
+
+```powershell
+git pull
+```
+
+Depois, no navegador, carregue em **Ctrl + F5** para o navegador não mostrar uma versão antiga.
+
+### Problemas comuns
+
+- **"py" não é reconhecido**: reinstale o Python e marque **Add python.exe to PATH**.
+- **"git" não é reconhecido**: reinstale o Git e abra o PowerShell outra vez.
+- **"Address already in use"** (porta ocupada): use outra porta, por exemplo `py -m http.server 8001`, e abra **http://localhost:8001**.
+- **A página aparece antiga ou sem alterações**: carregue em **Ctrl + F5**.
+
+---
+
 ## Para quem mantém o site
 
 - A publicação é feita por `.github/workflows/publicar-historias.yml`, que corre `tools/add_story.py` sempre que entram ficheiros em `novas-historias/`.
-- Para correr à mão, no Mac, com o Google Chrome instalado:
+- Para correr à mão, com o Google Chrome instalado (Mac ou Windows):
 
   ```bash
   pip3 install pymupdf pillow
   python3 tools/add_story.py
   ```
+
+  No Windows, use `py -m pip install pymupdf pillow` e `py tools\add_story.py`.
 
 - Cada história publicada fica em `assets/books/` (texto e ilustrações), em `assets/downloads/` (EPUB e PDF) e na lista `assets/data.js`.
 - Na lista, `draft: true` marca um rascunho (só visível com `?previa=1`, usado por `previa/index.html`), e `featured: true` marca a história em destaque na página inicial.
