@@ -44,6 +44,7 @@ window.ILLUSTRATED = [
     text: PDF("1606fbf5b5a348c4bbdb9a63abe2f31d"), quiz: PDF("8e41013186fc47f78ac8311ad68c0d46"), pictures: PDF("b35c78e59b2a433dafa44f0f766f8c72") },
   { title: "A Velha Mansão", blurb: "Lê se tiveres coragem…", age: [7, 9], cover: "bb3cf53a61bc4d8abefc954c5971f3ca~mv2.png", book: "a-velha-mansao", quizPage: true,
     text: PDF("de20dd48179343008104f4637b72f1f9"), quiz: PDF("b2e65296566c47558f0d1cb1b6a1f552"), pictures: PDF("cdb56f4c70a6492f807f5dfc2aa05b39") },
+  { title: "Pacholinha e Toc Toc", book: "pacholinha-e-toc-toc", draft: true, featured: true, blurb: "Hibernar? Mas o que é isso?…", age: [4, 8], cover: "assets/books/pacholinha-e-toc-toc/cover.jpg" },
 ];
 
 // Histórias enviadas por amigos do Conta-me Uma História (abrem o PDF original).
